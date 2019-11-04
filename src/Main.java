@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +52,8 @@ public class Main {
             }
 
             System.out.println("There will be " + containersToJapan(list) + " containers transported to Japan");
+            averageAmountPerShipType(list);
+
         }
         catch (IOException e){
             e.printStackTrace();
@@ -67,6 +70,31 @@ public class Main {
             }
         }
         return i;
+    }
+
+    public static void averageAmountPerShipType(ArrayList<Ship> list){
+        ArrayList<String> listOfTypes = new ArrayList<>();
+        int maxAverage = 0;
+        String maxType = "";
+        for(int i=0; i<list.size(); i++){
+            if(!listOfTypes.contains(list.get(i).type)){
+                listOfTypes.add(list.get(i).type);
+                int sum = 0;
+                int amount = 0;
+                for(int j=i; j<list.size(); j++){
+                    if(list.get(j).type.equals(list.get(i).type)){
+                        sum += list.get(j).containers.size();
+                        amount++;
+                    }
+                }
+                int average = sum/amount;
+                if(average >= maxAverage){
+                    maxAverage = average;
+                    maxType = list.get(i).type;
+                }
+            }
+        }
+        System.out.println("The biggest average amount of containers is transported by class " + maxType + " (" + maxAverage + ").");
     }
 }
 
