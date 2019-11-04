@@ -53,6 +53,7 @@ public class Main {
 
             System.out.println("There will be " + containersToJapan(list) + " containers transported to Japan");
             averageAmountPerShipType(list);
+            System.out.println("Average weight of X1 containers is " + averageWeightOfX1(list));
 
         }
         catch (IOException e){
@@ -95,6 +96,21 @@ public class Main {
             }
         }
         System.out.println("The biggest average amount of containers is transported by class " + maxType + " (" + maxAverage + ").");
+    }
+
+    public static long averageWeightOfX1(ArrayList<Ship> list){
+        int sum = 0;
+        int amount = 0;
+        for(Ship s : list){
+            for(ShipContainter sc : s.containers){
+                if(sc.contentType.equals("X1")){
+                    sum += sc.weight;
+                    amount++;
+                }
+            }
+        }
+        double average = sum/amount;
+        return Math.round(average);
     }
 }
 
