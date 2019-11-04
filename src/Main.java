@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -50,12 +49,24 @@ public class Main {
                     }
                 }
             }
-            System.out.println();
+
+            System.out.println("There will be " + containersToJapan(list) + " containers transported to Japan");
         }
         catch (IOException e){
             e.printStackTrace();
         }
+    }
 
 
+    public static int containersToJapan(ArrayList<Ship> list){
+        int i = 0;
+        for(Ship s : list){
+            for(ShipContainter sc : s.containers){
+                if(sc.destinationCountry.equals("JP"))
+                    i++;
+            }
+        }
+        return i;
     }
 }
+
