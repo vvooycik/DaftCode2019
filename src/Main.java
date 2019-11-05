@@ -1,6 +1,8 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +56,7 @@ public class Main {
             System.out.println("There will be " + containersToJapan(list) + " containers transported to Japan");
             averageAmountPerShipType(list);
             System.out.println("Average weight of X1 containers is " + averageWeightOfX1(list));
+            System.out.println("The biggest amount of containers from polish companies is sent by company named " + biggestPolishCo(list));
 
         }
         catch (IOException e){
@@ -111,6 +114,33 @@ public class Main {
         }
         double average = sum/amount;
         return Math.round(average);
+    }
+
+    public static String biggestPolishCo(ArrayList<Ship> list){
+        AtomicReference<String> biggestCo = new AtomicReference<>("");
+        AtomicInteger biggestAmount = new AtomicInteger();
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for(Ship s : list){
+            for(ShipContainter sc : s.containers){
+                if(sc.companyCountry.equals("pl")){
+                    if(map.containsKey(sc.companyName))
+                        map.replace(sc.companyName, map.get(sc.companyName), (map.get(sc.companyName) + 1));
+                    else{
+                        map.put(sc.companyName, 1);
+                    }
+                }
+            }
+        }
+        map.forEach((k, v) -> {
+            if(v.compareTo(biggestAmount.get())>=0){
+                biggestAmount.set(v);
+                biggestCo.set(k);
+            }
+        });
+
+
+        return biggestCo.get();
     }
 }
 
