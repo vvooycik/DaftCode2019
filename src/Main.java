@@ -57,6 +57,7 @@ public class Main {
             averageAmountPerShipType(list);
             System.out.println("Average weight of X1 containers is " + averageWeightOfX1(list));
             System.out.println("The biggest amount of containers from polish companies is sent by company named " + biggestPolishCo(list));
+            System.out.println("The container, with the biggest value out of all containers sent by german companies from Germany, is " + biggestValueDE(list) + "-type.");
 
         }
         catch (IOException e){
@@ -141,6 +142,20 @@ public class Main {
 
 
         return biggestCo.get();
+    }
+
+    public static String biggestValueDE(ArrayList<Ship> list){
+        String biggestValueType = "";
+        double biggestValue = 0;
+        for(Ship s : list){
+            for(ShipContainter sc : s.containers){
+                if(sc.companyCountry.equals("de") && sc.countryOfOrigin.equals("DE") && sc.getValue() >= biggestValue){
+                    biggestValue = sc.getValue();
+                    biggestValueType = sc.contentType;
+                }
+            }
+        }
+        return biggestValueType;
     }
 }
 

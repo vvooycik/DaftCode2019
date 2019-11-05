@@ -20,4 +20,8 @@ public class ShipContainter {
         this.companyCountry = companyCountry;
         this.price = price;
     }
+
+    public double getValue(){
+        return price/weight;
+    }
 }
